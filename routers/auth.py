@@ -66,13 +66,15 @@ async def settings_set(settings: str = Form(...),
                        clients: ClientStorage = Depends(get_clients)) -> str:
     """Set client's settings 
     """
-    if proxy != "":
-        cl.set_proxy(proxy)
+    
 
     if sessionid != "":
         cl = clients.get(sessionid)
     else:
         cl = clients.client()
+        if proxy != "":
+            cl.set_proxy(proxy)
+
     cl.set_settings(json.loads(settings))
     cl.expose()
     clients.set(cl)
