@@ -62,9 +62,13 @@ async def settings_get(sessionid: str,
 @router.post("/settings/set")
 async def settings_set(settings: str = Form(...),
                        sessionid: Optional[str] = Form(""),
+                       proxy: Optional[str] = Form(""),
                        clients: ClientStorage = Depends(get_clients)) -> str:
     """Set client's settings
     """
+    if proxy != "":
+        cl.set_proxy(proxy)
+
     if sessionid != "":
         cl = clients.get(sessionid)
     else:
